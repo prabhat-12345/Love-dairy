@@ -5,7 +5,7 @@ import time
 # 1. पेज की पूरी सेटिंग (No Scroll)
 st.set_page_config(page_title="Happy Birthday My Love!", page_icon="❤️", layout="wide")
 
-# 2. कस्टमाइज CSS (ओरिजिनल स्टाइल के साथ प्रीमियम पन्ने)
+# 2. कस्टमाइज CSS (लक्ज़री रोज़ गोल्ड थीम और शाइनिंग कार्ड्स)
 custom_css = """
 <style>
     /* ऐप का शानदार डार्क रोमांटिक बैकग्राउंड */
@@ -91,33 +91,43 @@ custom_css = """
     .badge-left { color: #ff0055; text-shadow: 0 0 8px #ff0055; }
     .badge-right { color: #ffd700; text-shadow: 0 0 8px #ffd700; }
     
-    /* इमेज का सेटिंग */
+    /* इमेज का कस्टमाइज सेटिंग */
     .stImage img {
         border-radius: 20px !important;
         border: 2px solid rgba(255, 0, 85, 0.5) !important;
         box-shadow: 0 0 25px rgba(255, 0, 85, 0.7) !important;
     }
 
-    /* विश कंटेनर और टेक्स्ट की स्टाइलिंग */
+    /* प्रीमियम विश कंटेनर और कस्टमाइज्ड टेक्स्ट बॉक्स */
     .wishes-container {
-        margin-top: 20px;
-        padding: 10px;
+        margin-top: 25px;
+        padding: 5px;
     }
 
-    .wish-text {
+    .premium-wish-box {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 0, 85, 0.2);
+        border-left: 4px solid #ff0055;
+        padding: 15px;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .wish-heading {
         font-family: 'Georgia', serif;
-        font-size: 1.05rem;
-        line-height: 1.6;
-        margin-bottom: 12px;
-        border-bottom: 1px solid rgba(255, 0, 85, 0.1);
-        padding-bottom: 8px;
-        color: #ffffff;
-    }
-
-    .wish-highlight {
         font-weight: bold;
         color: #ffd700;
-        text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        font-size: 1.1rem;
+        text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .wish-body {
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #ffe6ed;
     }
 
     /* डायरी के पन्नों (Tabs) की स्टाइल */
@@ -165,27 +175,45 @@ if not st.session_state.authenticated:
 
 # --- अनलॉक होने के बाद का मुख्य ऐप ---
 
-# बैकग्राउंड संगीत ट्रैक सिलेक्शन लॉजिक (इंटरनेट लिंक्स हटाकर बिल्कुल सेफ कोडिंग कर दी है)
+# म्यूजिक प्लेयर स्टेट लॉजिक
 if 'active_track' not in st.session_state:
     st.session_state.active_track = "https://soundhelix.com"
 
-# ऑटोमैटिक फोटो ढूंढने का सिस्टम
-all_files = os.listdir(".")
-all_images = [f for f in all_files if f.lower().endswith((".jpeg", ".jpg", ".png", ".webp")) and f.lower() != "app.py"]
+# अदृश्य बैकग्राउंड ऑडियो सिस्टम
+st.components.v1.html(f"""
+<audio id="bg-audio" loop autoplay src="{st.session_state.active_track}"></audio>
+<script>
+    var audio = window.parent.document.getElementById('bg-audio') || document.getElementById('bg-audio');
+    function triggerPlay() {{
+        if (audio && audio.paused) {{
+            audio.play().catch(e => console.log("Interaction required"));
+        }}
+    }}
+    window.parent.document.addEventListener('click', triggerPlay, {{ once: true }});
+    window.parent.document.addEventListener('touchstart', triggerPlay, {{ once: true }});
+    if(audio) {{ audio.play(); }}
+</script>
+""", height=0)
 
-main_photo = all_images[0] if len(all_images) > 0 else None
-
-# एल्बम खाली न रहे इसलिए आपकी सभी तस्वीरों को लिस्ट किया है, वरना बैकअप के लिए रोमांटिक एचडी इमेजेस सेट हैं
-album_photos = all_images if len(all_images) > 0 else [
-    "https://unsplash.com",
-    "https://unsplash.com",
-    "https://unsplash.com"
-]
+# गिटहब फोल्डर से इमेज लोडिंग फ़ंक्शंस
+if 'cached_images' not in st.session_state:
+    all_files = os.listdir(".")
+    all_images = [f for f in all_files if f.lower().endswith((".jpeg", ".jpg", ".png", ".webp")) and f.lower() != "app.py"]
+    
+    if len(all_images) > 0:
+        st.session_state.cached_images = all_images
+    else:
+        # बैकअप इमेजेस ताकि कभी भी ब्लैक/खाली स्क्रीन न मिले
+        st.session_state.cached_images = [
+            "https://unsplash.com",
+            "https://unsplash.com",
+            "https://unsplash.com"
+        ]
 
 # 4. डायरी के अलग-अलग पन्ने (Tabs System)
 panna1, panna2, panna3 = st.tabs(["🏠 मुख्य पन्ना", "🎵 म्यूजिक रूम", "📸 फोटो एल्बम"])
 
-# ----------------- पन्ना 1: होम और पूरे 20 लव कोट्स -----------------
+# ----------------- पन्ना 1: होम और पूरे 20 प्रीमियम कोट्स -----------------
 with panna1:
     st.markdown('<div class="love-sender-box"><span class="love-name">🎉 PRABHAT 🎉</span><br><span style="color:#ffb3cc; font-size:0.9rem; font-weight:bold;">Wishes Happy Birthday To His Lifeline</span><br><span class="love-receiver-name">💖 LAXMI 💖</span></div>', unsafe_allow_html=True)
     st.markdown('<h1 class="main-title">Happy Birthday<br>My Love 🎂</h1>', unsafe_allow_html=True)
@@ -194,10 +222,8 @@ with panna1:
     col1, col2 = st.columns(2)
 
     with col1:
-        if main_photo:
-            st.image(main_photo, use_container_width=True)
-        else:
-            st.image("https://unsplash.com", use_container_width=True)
+        # मुख्य पन्ने पर गिटहब फोल्डर में मौजूद पहली फोटो खींचेगा
+        st.image(st.session_state.cached_images[0], use_container_width=True)
 
     with col2:
         circle_html = """
@@ -228,22 +254,16 @@ with panna1:
 
     st.markdown('<div class="romantic-badge badge-right">💝 YOU ARE MY EVERYTHING 🧸</div>', unsafe_allow_html=True)
 
-    # यहां आपके पूरे 20 कोट्स को बिना एचटीएमएल ब्लॉक के सीधा टेक्स्ट फॉर्म में रखा है ताकि गिटहब में कुछ भी न कटे
-    st.markdown('### 📖 हमारी मोहब्बत के हसीन लम्हे:')
+    # कस्टमाइज्ड लक्ज़री एचटीएमएल बॉक्स के अंदर पूरे 20 कोट्स
+    st.markdown('<div class="wishes-container">', unsafe_allow_html=True)
     
-    st.write("1. **11 Years Of Love:** ग्यारह साल का ये सफर सिर्फ वक्त नहीं, मेरी जिंदगी की सबसे हसीन यादें हैं। 🌹")
-    st.write("2. **Forever Mine:** तुम कल भी मेरी लाइफलाइन थीं, आज भी हो और हमेशा रहोगी। 💖")
-    st.write("3. **To My Soulmate:** भगवान से हर जन्म में सिर्फ तुम्हें ही अपनी हमसफर के रूप में मांगूंगा। 💍")
-    st.write("4. **Adhoori Zindagi Poori Hui:** तुम्हारे आने से मेरी जिंदगी में खुशियों के सारे रंग भर गए। 🌸")
-    st.write("5. **Deepest Love:** दुनिया की कोई भी ताकत तुम्हारे लिए मेरे प्यार को कम नहीं कर सकती। 🏹")
-    st.write("6. **Meri Manzil:** तुम्हारे साथ बिताया हर एक पल मेरे लिए किसी त्योहार से कम नहीं है। 👑")
-    st.write("7. **Queen of My Heart:** तुम मेरे दिल की वो रानी हो जिसका राज इस दिल पर हमेशा रहेगा। 🤍")
-    st.write("8. **Rooh Ka Rishta:** हमारा रिश्ता सिर्फ जिस्म का नहीं, बल्कि रूह से रूह का जुड़ाव है। ♾️")
-    st.write("9. **My Lifeline:** तुम्हारे चेहरे की मुस्कान ही मेरे जीने की सबसे बड़ी वजह है। 🥰")
-    st.write("10. **Aakhiri Wada:** हाथ थाम के कहता हूँ, आखिरी सांस तक सिर्फ तुमसे ही बेइंतहा मोहब्बत करूँगा। 🌟")
-    st.write("11. **11 Years of Togetherness:** हमारा यह 11 साल का सफर सिर्फ एक रिश्ता नहीं, मेरी पूरी जिंदगी की सबसे खूबसूरत सच्चाई है। 🌹")
-    st.write("12. **Forever Mine Glow:** चेहरे पर आपके रहे हमेशा नूर, खुदा कभी न करे हमसे आपको दूर... Happy Birthday Jaan! 🧎")
-    st.write("13. **To My Love Beat:** 'You are the beat of my heart, the smile on my face, and the spark in my life. I love you endlessly.' 🏹")
-    st.write("14. **Adhoori Hai Life:** तुम्हारे बिना मेरी सुबह और मेरी शाम अधूरी है, सच कहूँ तो लक्ष्मी, तुम्हारे बिना मेरी पूरी जान अधूरी है! 🌸")
-    st.write("15. **Unmatched Love:** 'In all the world, there is no heart for me like yours. In all the world, there is no love for you like mine.' 🌟")
-    
+    quotes_data = [
+        ("🌹 1. 11 Years Of Love", "ग्यारह साल का ये सफर सिर्फ वक्त नहीं, मेरी जिंदगी की सबसे हसीन यादें हैं।"),
+        ("💖 2. Forever Mine", "तुम कल भी मेरी लाइफलाइन थीं, आज भी हो और हमेशा रहोगी।"),
+        ("💍 3. To My Soulmate", "भगवान से हर जन्म में सिर्फ तुम्हें ही अपनी हमसफर के रूप में मांगूंगा।"),
+        ("🌸 4. Adhoori Zindagi Poori Hui", "तुम्हारे आने से मेरी जिंदगी में खुशियों के सारे रंग भर गए।"),
+        ("🏹 5. Deepest Love", "दुनिया की कोई भी ताकत तुम्हारे लिए मेरे प्यार को कम नहीं कर सकती।"),
+        ("👑 6. Meri Manzil", "तुम्हारे साथ बिताया हर एक पल मेरे लिए किसी त्योहार से कम नहीं है।"),
+        ("🤍 7. Queen of My Heart", "तुम मेरे दिल की वो रानी हो जिसका राज इस दिल पर हमेशा रहेगा।"),
+        ("♾️ 8. Rooh Ka Rishta", "हमारी रिश्ता सिर्फ जिस्म का नहीं, बल्कि रूह से रूह का जुड़ाव है।"),
+        ("🥰 9. My Lifeline", "तुम्हारे चेहरे की मुस्कान ही मेरे जीने की सबसे बड़ी वजह है।"),
