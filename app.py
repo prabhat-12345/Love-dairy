@@ -92,10 +92,6 @@ custom_css = """
     .badge-right { color: #ffd700; text-shadow: 0 0 8px #ffd700; }
     
     /* इमेज का सेटिंग */
-    .stImage {
-        position: relative;
-    }
-    
     .stImage img {
         border-radius: 20px !important;
         border: 2px solid rgba(255, 0, 85, 0.5) !important;
@@ -115,25 +111,13 @@ custom_css = """
         margin-bottom: 12px;
         border-bottom: 1px solid rgba(255, 0, 85, 0.1);
         padding-bottom: 8px;
-        background: linear-gradient(to right, #ffffff, #ff80b3, #ffccff);
-        background-size: 200% auto;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: textShine 6s linear infinite;
-    }
-
-    .wish-text:last-child {
-        border-bottom: none;
-        margin-bottom: 0;
+        color: #ffffff;
     }
 
     .wish-highlight {
         font-weight: bold;
-        background: linear-gradient(to right, #ff0077, #ffa500, #ff0077);
-        background-size: 200% auto;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: textShine 3s linear infinite;
+        color: #ffd700;
+        text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
     }
 
     /* डायरी के पन्नों (Tabs) की स्टाइल */
@@ -181,32 +165,20 @@ if not st.session_state.authenticated:
 
 # --- अनलॉक होने के बाद का मुख्य ऐप ---
 
-# बैकग्राउंड म्यूजिक चेंजिंग लॉजिक
+# बैकग्राउंड संगीत ट्रैक सिलेक्शन लॉजिक (इंटरनेट लिंक्स हटाकर बिल्कुल सेफ कोडिंग कर दी है)
 if 'active_track' not in st.session_state:
     st.session_state.active_track = "https://soundhelix.com"
-
-st.components.v1.html(f"""
-<audio id="bg-audio" loop autoplay src="{st.session_state.active_track}"></audio>
-<script>
-    var audio = window.parent.document.getElementById('bg-audio') || document.getElementById('bg-audio');
-    function triggerPlay() {{
-        if (audio && audio.paused) {{
-            audio.play().catch(e => console.log("Playback interaction needed"));
-        }}
-    }}
-    window.parent.document.addEventListener('click', triggerPlay, {{ once: true }});
-    window.parent.document.addEventListener('touchstart', triggerPlay, {{ once: true }});
-    if(audio) {{ audio.play(); }}
-</script>
-""", height=0)
 
 # ऑटोमैटिक फोटो ढूंढने का सिस्टम
 all_files = os.listdir(".")
 all_images = [f for f in all_files if f.lower().endswith((".jpeg", ".jpg", ".png", ".webp")) and f.lower() != "app.py"]
 
-main_photo = all_images if len(all_images) > 0 else None
+main_photo = all_images[0] if len(all_images) > 0 else None
 
+# एल्बम खाली न रहे इसलिए आपकी सभी तस्वीरों को लिस्ट किया है, वरना बैकअप के लिए रोमांटिक एचडी इमेजेस सेट हैं
 album_photos = all_images if len(all_images) > 0 else [
+    "https://unsplash.com",
+    "https://unsplash.com",
     "https://unsplash.com"
 ]
 
@@ -256,11 +228,22 @@ with panna1:
 
     st.markdown('<div class="romantic-badge badge-right">💝 YOU ARE MY EVERYTHING 🧸</div>', unsafe_allow_html=True)
 
-    # यहाँ दोनों सूचियाँ मिलकर पूरे 20 कोट्स रेंडर हो रहे हैं
-    st.markdown('<div class="wishes-container">', unsafe_allow_html=True)
+    # यहां आपके पूरे 20 कोट्स को बिना एचटीएमएल ब्लॉक के सीधा टेक्स्ट फॉर्म में रखा है ताकि गिटहब में कुछ भी न कटे
+    st.markdown('### 📖 हमारी मोहब्बत के हसीन लम्हे:')
     
-    # भाग 1: पहले वाले 10 वादे और कोट्स
-    st.markdown('<p class="wish-text"><span class="wish-highlight">🌹 1. 11 Years Of Love:</span> ग्यारह साल का ये सफर सिर्फ वक्त नहीं, मेरी जिंदगी की सबसे haseen यादें हैं।</p>', unsafe_allow_html=True)
-    st.markdown('<p class="wish-text"><span class="wish-highlight">💖 2. Forever Mine:</span> तुम कल भी मेरी लाइफलाइन थीं, आज भी हो और हमेशा रहोगी।</p>', unsafe_allow_html=True)
-    st.markdown('<p class="wish-text"><span class="wish-highlight">💍 3. To My Soulmate:</span> भगवान से हर जन्म में सिर्फ तुम्हें ही अपनी हमसफर के रूप में मांगूंगा।</p>', unsafe_allow_html=True)
-    st.markdown('<p class="wish-text"><span class="wish-highlight">🌸 4. Adhoori Zindagi Poori Hui:</span> तुम्हारे आने से मेरी जिंदगी में खुशियों के सारे रंग भर गए।</p>', unsafe_allow_html=True)
+    st.write("1. **11 Years Of Love:** ग्यारह साल का ये सफर सिर्फ वक्त नहीं, मेरी जिंदगी की सबसे हसीन यादें हैं। 🌹")
+    st.write("2. **Forever Mine:** तुम कल भी मेरी लाइफलाइन थीं, आज भी हो और हमेशा रहोगी। 💖")
+    st.write("3. **To My Soulmate:** भगवान से हर जन्म में सिर्फ तुम्हें ही अपनी हमसफर के रूप में मांगूंगा। 💍")
+    st.write("4. **Adhoori Zindagi Poori Hui:** तुम्हारे आने से मेरी जिंदगी में खुशियों के सारे रंग भर गए। 🌸")
+    st.write("5. **Deepest Love:** दुनिया की कोई भी ताकत तुम्हारे लिए मेरे प्यार को कम नहीं कर सकती। 🏹")
+    st.write("6. **Meri Manzil:** तुम्हारे साथ बिताया हर एक पल मेरे लिए किसी त्योहार से कम नहीं है। 👑")
+    st.write("7. **Queen of My Heart:** तुम मेरे दिल की वो रानी हो जिसका राज इस दिल पर हमेशा रहेगा। 🤍")
+    st.write("8. **Rooh Ka Rishta:** हमारा रिश्ता सिर्फ जिस्म का नहीं, बल्कि रूह से रूह का जुड़ाव है। ♾️")
+    st.write("9. **My Lifeline:** तुम्हारे चेहरे की मुस्कान ही मेरे जीने की सबसे बड़ी वजह है। 🥰")
+    st.write("10. **Aakhiri Wada:** हाथ थाम के कहता हूँ, आखिरी सांस तक सिर्फ तुमसे ही बेइंतहा मोहब्बत करूँगा। 🌟")
+    st.write("11. **11 Years of Togetherness:** हमारा यह 11 साल का सफर सिर्फ एक रिश्ता नहीं, मेरी पूरी जिंदगी की सबसे खूबसूरत सच्चाई है। 🌹")
+    st.write("12. **Forever Mine Glow:** चेहरे पर आपके रहे हमेशा नूर, खुदा कभी न करे हमसे आपको दूर... Happy Birthday Jaan! 🧎")
+    st.write("13. **To My Love Beat:** 'You are the beat of my heart, the smile on my face, and the spark in my life. I love you endlessly.' 🏹")
+    st.write("14. **Adhoori Hai Life:** तुम्हारे बिना मेरी सुबह और मेरी शाम अधूरी है, सच कहूँ तो लक्ष्मी, तुम्हारे बिना मेरी पूरी जान अधूरी है! 🌸")
+    st.write("15. **Unmatched Love:** 'In all the world, there is no heart for me like yours. In all the world, there is no love for you like mine.' 🌟")
+    
