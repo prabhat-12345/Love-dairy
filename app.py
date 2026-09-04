@@ -5,9 +5,11 @@ import time
 # 1. पेज की पूरी सेटिंग
 st.set_page_config(page_title="Happy Birthday My Love!", page_icon="❤️", layout="wide")
 
-# 2. प्रीमियम कस्टमाइज नियॉन थीम CSS (नो बलून्स स्क्रिप्ट - ताकि ऐप कभी क्रैश न हो)
+# 2. प्रीमियम कस्टमाइज नियॉन थीम और धड़कते दिल का CSS
 custom_css = """
 <style>
+    @import url('https://googleapis.com');
+
     .stApp {
         background: linear-gradient(135deg, #0f0003 0%, #2a0a07 50%, #4d0011 100%);
         color: #ffffff;
@@ -59,25 +61,67 @@ custom_css = """
         box-shadow: 0 0 25px rgba(255, 0, 85, 0.7) !important;
     }
     
-    /* 🌟 चमचमाते हुए नियॉन कोट्स बॉक्स */
+    /* ❤️ धड़कता हुआ मोटा नियॉन दिल (Beating Heart Box) */
+    .beating-heart-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 25px auto;
+        position: relative;
+        width: 170px;
+        height: 170px;
+        background: #ff0055;
+        border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+        clip-path: path('M 85,30 C 50,0 0,20 0,75 C 0,120 50,150 85,170 C 120,150 170,120 170,75 C 170,20 120,0 85,30 Z');
+        box-shadow: 0 0 30px #ff0055;
+        animation: heartBeat 1.2s infinite;
+    }
+    @keyframes heartBeat {
+        0% { transform: scale(0.95); box-shadow: 0 0 20px #ff0055; }
+        50% { transform: scale(1.08); box-shadow: 0 0 40px #ff3385, 0 0 20px #ffd700; }
+        100% { transform: scale(0.95); box-shadow: 0 0 20px #ff0055; }
+    }
+    .heart-text {
+        font-family: 'Dancing Script', cursive, serif;
+        font-size: 0.95rem;
+        font-weight: 900 !important;
+        color: #ffffff;
+        text-align: center;
+        line-height: 1.3;
+        text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.8), 0 0 10px #ffd700;
+        z-index: 10;
+        padding: 10px;
+        margin-top: 10px;
+    }
+    
+    /* 🌟 स्टाइलिश नियॉन कोट्स टेक्स्ट बॉक्स */
     .wishes-container { margin-top: 25px; padding: 5px; }
     .premium-wish-box {
-        background: rgba(15, 0, 5, 0.8); border: 2px solid #ff0055; padding: 16px; border-radius: 16px; margin-bottom: 20px;
+        background: rgba(15, 0, 5, 0.8); 
+        border: 2px solid #ff0055; 
+        padding: 16px; 
+        border-radius: 16px; 
+        margin-bottom: 20px;
         box-shadow: 0 0 15px #ff0055, inset 0 0 10px rgba(255, 0, 85, 0.3);
     }
     .wish-heading {
         font-family: 'Georgia', serif; font-weight: bold; color: #ffd700; font-size: 1.15rem;
         text-shadow: 0 0 10px #ffd700; margin-bottom: 6px; display: block;
     }
-    .wish-body { font-size: 1.02rem; line-height: 1.6; color: #ffffff; }
+    .wish-body { 
+        font-family: 'Caveat', 'Dancing Script', cursive; 
+        font-size: 1.3rem; 
+        line-height: 1.5; 
+        color: #ffccdb;
+        text-shadow: 0 0 8px rgba(255, 51, 119, 0.6);
+    }
     
-    /* बटन्स की स्टाइल */
+    /* बटन स्टाइल */
     .stButton>button {
         width: 100% !important; background: linear-gradient(45deg, #ff0055, #ff3377) !important;
         color: white !important; font-weight: bold !important; border-radius: 20px !important;
         border: 1px solid #ffd700 !important; box-shadow: 0 4px 15px rgba(255, 0, 85, 0.4) !important;
     }
-    
     .stTabs [data-baseweb="tab-list"] { gap: 8px; justify-content: center; }
     .stTabs [data-baseweb="tab"] {
         background-color: rgba(255, 51, 119, 0.1) !important; border: 1px solid rgba(255, 51, 119, 0.3) !important;
@@ -123,7 +167,7 @@ album_photos = all_images if len(all_images) > 0 else ["https://unsplash.com"]
 
 panna1, panna2, panna3 = st.tabs(["🏠 मुख्य पन्ना", "🎵 म्यूजिक रूम", "📸 फोटो एल्बम"])
 
-# ----------------- पन्ना 1: होम और पूरे 20 नियॉन कोट्स -----------------
+# ----------------- पन्ना 1: होम और पूरे 20 मिक्स्ड स्टाइलिश कोट्स -----------------
 with panna1:
     st.markdown('<div class="love-sender-box"><span class="love-name">🎉 PRABHAT 🎉</span><br><span style="color:#ffb3cc; font-size:0.9rem; font-weight:bold;">Wishes Happy Birthday To His Lifeline</span><br><span class="love-receiver-name">💖 LAXMI 💖</span></div>', unsafe_allow_html=True)
     st.markdown('<h1 class="main-title">Happy Birthday<br>My Love 🎂</h1>', unsafe_allow_html=True)
@@ -137,22 +181,17 @@ with panna1:
             st.image("https://unsplash.com", use_container_width=True)
 
     with col2:
-        st.markdown('<div style="display: flex; flex-direction: column; justify-content: center; align-items: center; border: 2px solid #ff0055; border-radius: 50%; width: 140px; height: 140px; margin: 30px auto 0 auto; background: rgba(255,0,85,0.1); box-shadow: 0 0 20px #ff0055; font-family: \'Georgia\', serif; font-size: 0.8rem; font-weight: bold; color: #ffffff; text-align: center; line-height: 1.4; transform: rotate(-15deg);">11 💖 YRS<br>OF 🌹 LOVE<br>MY 💍 WIFE<br>MY BABU<br>MY 💞 JAAN<br>MY 🚼 LIFE</div>', unsafe_allow_html=True)
+        # ❤️ धड़कता हुआ शानदार मोटा दिल लेआउट
+        st.markdown('<div class="beating-heart-container"><div class="heart-text">11 💖 YRS<br>OF 🌹 LOVE<br>MY 💍 WIFE<br>MY BABU<br>MY 💞 JAAN<br>MY 🚼 LIFE</div></div>', unsafe_allow_html=True)
 
     st.markdown('<div class="romantic-badge badge-right">💝 YOU ARE MY EVERYTHING 🧸</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="wishes-container">', unsafe_allow_html=True)
     
-    # 20 प्रीमियम कोट्स नियॉन बॉक्स में
-    st.markdown('<div class="premium-wish-box"><span class="wish-heading">🌹 1. 11 Years Of Love</span><p class="wish-body">ग्यारह साल का ये सफर सिर्फ वक्त नहीं, मेरी जिंदगी की सबसे हसीन यादें हैं।</p></div>', unsafe_allow_html=True)
-    st.markdown('<div class="premium-wish-box"><span class="wish-heading">💖 2. Forever Mine</span><p class="wish-body">तुम कल भी मेरी लाइफलाइन थीं, आज भी हो और हमेशा रहोगी।</p></div>', unsafe_allow_html=True)
-    st.markdown('<div class="premium-wish-box"><span class="wish-heading">💍 3. To My Soulmate</span><p class="wish-body">भगवान से हर जन्म में सिर्फ तुम्हें ही अपनी हमसफर के रूप में मांगूंगा।</p></div>', unsafe_allow_html=True)
-    st.markdown('<div class="premium-wish-box"><span class="wish-heading">🌸 4. Adhoori Zindagi Poori Hui</span><p class="wish-body">तुम्हारे आने से मेरी जिंदगी में खुशियों के सारे रंग भर गए।</p></div>', unsafe_allow_html=True)
-    st.markdown('<div class="premium-wish-box"><span class="wish-heading">🏹 5. Deepest Love</span><p class="wish-body">दुनिया की कोई भी ताकत तुम्हारे लिए मेरे प्यार को कम नहीं कर सकती।</p></div>', unsafe_allow_html=True)
-    st.markdown('<div class="premium-wish-box"><span class="wish-heading">👑 6. Meri Manzil</span><p class="wish-body">तुम्हारे साथ बिताया हर एक पल मेरे लिए किसी त्योहार से कम नहीं है।</p></div>', unsafe_allow_html=True)
-    st.markdown('<div class="premium-wish-box"><span class="wish-heading">🤍 7. Queen of My Heart</span><p class="wish-body">तुम मेरे दिल की वो रानी हो जिसका राज इस दिल पर हमेशा रहेगा।</p></div>', unsafe_allow_html=True)
-    st.markdown('<div class="premium-wish-box"><span class="wish-heading">♾️ 8. Rooh Ka Rishta</span><p class="wish-body">हमारा रिश्ता सिर्फ जिस्म का नहीं, बल्कि रूह से रूह का जुड़ाव है।</p></div>', unsafe_allow_html=True)
-    st.markdown('<div class="premium-wish-box"><span class="wish-heading">🥰 9. My Lifeline</span><p class="wish-body">तुम्हारे चेहरे की मुस्कान ही मेरे जीने की सबसे बड़ी वजह है।</p></div>', unsafe_allow_html=True)
-    st.markdown('<div class="premium-wish-box"><span class="wish-heading">🌟 10. Aakhiri Wada</span><p class="wish-body">हात थाम के कहता हूँ, आखिरी सांस तक सिर्फ तुमसे ही बेइंतहा मोहब्बत करूँगा।</p></div>', unsafe_allow_html=True)
-    st.markdown('<div class="premium-wish-box"><span class="wish-heading">🌹 11. Togetherness Power</span><p class="wish-body">हमारा यह सफर मेरी पूरी जिंदगी की सबसे खूबसूरत सच्चाई है। 🌹</p></div>', unsafe_allow_html=True)
+    # 20 मिक्स्ड हिंदी-इंग्लिश स्टाइलिश नियॉन कोट्स
+    st.markdown('<div class="premium-wish-box"><span class="wish-heading">🌹 1. 11 Years Of Love</span><p class="wish-body">ग्यारह साल का ये सफर सिर्फ वक्त नहीं, It is the most beautiful journey of my life with you. 🌹</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="premium-wish-box"><span class="wish-heading">💖 2. Forever Mine</span><p class="wish-body">चेहरे पर आपके रहे हमेशा नूर, You are my forever love, no one can take you away from me. 💖</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="premium-wish-box"><span class="wish-heading">💍 3. To My Soulmate</span><p class="wish-body">भगवान से हर जन्म में सिर्फ तुम्हें ही मांगूंगा, You are my ultimate soulmate now and forever. 💍</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="premium-wish-box"><span class="wish-heading">🌸 4. Life Completed</span><p class="wish-body">तुम्हारे आने से खुशियों के सारे रंग भर गए, You completed my incomplete world so beautifully. 🌸</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="premium-wish-box"><span class="wish-heading">🏹 5. Deepest Love</span><p class="wish-body">दुनिया की कोई भी ताकत हमारे प्यार को कम नहीं कर सकती, My love for you grows deeper every single day. 🏹</p></div>', unsafe_allow_html=True)
     
