@@ -2,26 +2,21 @@ import streamlit as st
 import os
 import time
 
-# 1. पेज की पूरी सेटिंग (No Scroll)
+# 1. पेज की पूरी सेटिंग
 st.set_page_config(page_title="Happy Birthday My Love!", page_icon="❤️", layout="wide")
 
-# 2. कस्टमाइज CSS (लक्ज़री रोज़ गोल्ड थीम और शाइनिंग कार्ड्स)
+# 2. कस्टमाइज CSS
 custom_css = """
 <style>
-    /* ऐप का शानदार डार्क रोमांटिक बैकग्राउंड */
     .stApp {
         background: linear-gradient(135deg, #0f0003 0%, #2a0a07 50%, #4d0011 100%);
         color: #ffffff;
     }
-    
-    /* मुख्य कंटेनर मोबाइल स्क्रीन के लिए */
     .block-container {
         padding-top: 2.2rem !important;
         padding-bottom: 2rem !important;
         max-width: 450px !important;
     }
-    
-    /* मुख्य बनावट सेटिंग */
     .main-title {
         font-family: 'Georgia', serif;
         text-align: center;
@@ -36,20 +31,16 @@ custom_css = """
         -webkit-text-fill-color: transparent;
         animation: textShine 4s linear infinite;
     }
-    
     @keyframes textShine {
         0% { background-position: 0% center; }
         100% { background-position: 200% center; }
     }
-    
-    /* सबसे ऊपर दिखने वाला संदेश */
     .love-sender-box {
         text-align: center;
         margin-top: 5px;
         margin-bottom: 12px;
         line-height: 1.4;
     }
-    
     .love-name {
         font-family: 'Georgia', serif;
         font-size: 2rem;
@@ -61,7 +52,6 @@ custom_css = """
         text-shadow: 0px 0px 15px rgba(255, 128, 179, 0.6);
         display: inline-block;
     }
-    
     .love-receiver-name {
         font-family: 'Georgia', serif;
         font-size: 2.2rem;
@@ -73,8 +63,6 @@ custom_css = """
         text-shadow: 0px 0px 20px #ff0055, 0px 0px 10px #ff00b3;
         display: inline-block;
     }
-    
-    /* फोटो के ऊपर और नीचे चमकने वाले टैग */
     .romantic-badge {
         font-family: 'Georgia', serif;
         font-size: 1.2rem;
@@ -87,23 +75,17 @@ custom_css = """
         border: 1px solid rgba(255, 0, 85, 0.3);
         width: fit-content;
     }
-    
     .badge-left { color: #ff0055; text-shadow: 0 0 8px #ff0055; }
     .badge-right { color: #ffd700; text-shadow: 0 0 8px #ffd700; }
-    
-    /* इमेज का कस्टमाइज सेटिंग */
     .stImage img {
         border-radius: 20px !important;
         border: 2px solid rgba(255, 0, 85, 0.5) !important;
         box-shadow: 0 0 25px rgba(255, 0, 85, 0.7) !important;
     }
-
-    /* प्रीमियम विश कंटेनर और कस्टमाइज्ड टेक्स्ट बॉक्स */
     .wishes-container {
         margin-top: 25px;
         padding: 5px;
     }
-
     .premium-wish-box {
         background: rgba(255, 255, 255, 0.04);
         border: 1px solid rgba(255, 0, 85, 0.2);
@@ -113,7 +95,6 @@ custom_css = """
         margin-bottom: 15px;
         box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     }
-
     .wish-heading {
         font-family: 'Georgia', serif;
         font-weight: bold;
@@ -123,14 +104,11 @@ custom_css = """
         margin-bottom: 5px;
         display: block;
     }
-
     .wish-body {
         font-size: 1rem;
         line-height: 1.5;
         color: #ffe6ed;
     }
-
-    /* डायरी के पन्नों (Tabs) की स्टाइल */
     .stTabs [data-baseweb="tab-list"] {
         gap: 8px;
         justify-content: center;
@@ -179,7 +157,6 @@ if not st.session_state.authenticated:
 if 'active_track' not in st.session_state:
     st.session_state.active_track = "https://soundhelix.com"
 
-# अदृश्य बैकग्राउंड ऑडियो सिस्टम
 st.components.v1.html(f"""
 <audio id="bg-audio" loop autoplay src="{st.session_state.active_track}"></audio>
 <script>
@@ -195,7 +172,7 @@ st.components.v1.html(f"""
 </script>
 """, height=0)
 
-# गिटहब फोल्डर से इमेज लोडिंग फ़ंक्शंस
+# गिटहब फोल्डर से इमेज लोडिंग
 if 'cached_images' not in st.session_state:
     all_files = os.listdir(".")
     all_images = [f for f in all_files if f.lower().endswith((".jpeg", ".jpg", ".png", ".webp")) and f.lower() != "app.py"]
@@ -209,7 +186,7 @@ if 'cached_images' not in st.session_state:
             "https://unsplash.com"
         ]
 
-# 4. डायरी के अलग-अलग पन्ने (Tabs System)
+# 4. डायरी के अलग-अलग पन्ने
 panna1, panna2, panna3 = st.tabs(["🏠 मुख्य पन्ना", "🎵 म्यूजिक रूम", "📸 फोटो एल्बम"])
 
 # ----------------- पन्ना 1: होम और पूरे 20 प्रीमियम कोट्स -----------------
@@ -252,11 +229,11 @@ with panna1:
 
     st.markdown('<div class="romantic-badge badge-right">💝 YOU ARE MY EVERYTHING 🧸</div>', unsafe_allow_html=True)
 
-    # कस्टमाइज्ड लक्ज़री एचटीएमएल बॉक्स के अंदर पूरे 20 कोट्स
     st.markdown('<div class="wishes-container">', unsafe_allow_html=True)
     
-    quotes_data = [
-        ("🌹 1. 11 Years Of Love", "ग्यारह साल का ये सफर सिर्फ वक्त नहीं, मेरी जिंदगी की सबसे हसीन यादें हैं।"),
+    # 20 प्रीमियम कोट्स बिना किसी बड़े ब्रैकेट के सीधे सुरक्षित तरीके से रेंडर किए गए हैं
+    quotes_list = [
+        ("🌹 1. 11 Years Of Love", "ग्यारह साल का ये सफर सिर्फ वक्त नहीं, मेरी जिंदगी की सबसे haseen यादें हैं।"),
         ("💖 2. Forever Mine", "तुम कल भी मेरी लाइफलाइन थीं, आज भी हो और हमेशा रहोगी।"),
         ("💍 3. To My Soulmate", "भगवान से हर जन्म में सिर्फ तुम्हें ही अपनी हमसफर के रूप में मांगूंगा।"),
         ("🌸 4. Adhoori Zindagi Poori Hui", "तुम्हारे आने से मेरी जिंदगी में खुशियों के सारे रंग भर गए।"),
@@ -266,4 +243,7 @@ with panna1:
         ("♾️ 8. Rooh Ka Rishta", "हमारी रिश्ता सिर्फ जिस्म का नहीं, बल्कि रूह से रूह का जुड़ाव है।"),
         ("🥰 9. My Lifeline", "तुम्हारे चेहरे की मुस्कान ही मेरे जीने की सबसे बड़ी वजह है।"),
         ("🌟 10. Aakhiri Wada", "हात थाम के कहता हूँ, आखिरी सांस तक सिर्फ तुमसे ही बेइंतहा मोहब्बत करूँगा।"),
-        
+        ("🌹 11. Togetherness Power", "हमारा यह सफर मेरी पूरी जिंदगी की सबसे खूबसूरत सच्चाई है।"),
+        ("🧎 12. Eternal Glow", "चेहरे पर आपके रहे हमेशा नूर, खुदा कभी न करे हमसे आपको दूर... Happy Birthday Jaan!"),
+        ("🏹 13. Heartbeat Track", "'You are the beat of my heart, the smile on my face, and the spark in my life. I love you endlessly.'"),
+        ("🌸 14. Completeness", "तुम्हारे बिना मेरी सुबह और मेरी शाम अधूरी है, सच कहूँ तो लक्ष्मी, तुम्हारे बिना मेरी पूरी जान अधूरी है!"),
