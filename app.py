@@ -5,14 +5,12 @@ import time
 # 1. पेज की पूरी सेटिंग
 st.set_page_config(page_title="Happy Birthday My Love!", page_icon="❤️", layout="wide")
 
-# 2. लक्ज़री नियॉन थीम और तैरते हुए बलून्स का प्रीमियम CSS
+# 2. प्रीमियम कस्टमाइज नियॉन थीम CSS (नो बलून्स स्क्रिप्ट - ताकि ऐप कभी क्रैश न हो)
 custom_css = """
 <style>
     .stApp {
-        background: linear-gradient(135deg, #0d0003 0%, #1a0507 50%, #2b000a 100%);
+        background: linear-gradient(135deg, #0f0003 0%, #2a0a07 50%, #4d0011 100%);
         color: #ffffff;
-        position: relative;
-        overflow-x: hidden;
     }
     .block-container {
         padding-top: 2.2rem !important;
@@ -61,30 +59,21 @@ custom_css = """
         box-shadow: 0 0 25px rgba(255, 0, 85, 0.7) !important;
     }
     
-    /* 🌟 नियॉन शाइन विश बॉक्स डिज़ाइन */
+    /* 🌟 चमचमाते हुए नियॉन कोट्स बॉक्स */
     .wishes-container { margin-top: 25px; padding: 5px; }
     .premium-wish-box {
-        background: rgba(15, 0, 5, 0.75); border: 2px solid #ff0055; padding: 16px; border-radius: 16px; margin-bottom: 20px;
+        background: rgba(15, 0, 5, 0.8); border: 2px solid #ff0055; padding: 16px; border-radius: 16px; margin-bottom: 20px;
         box-shadow: 0 0 15px #ff0055, inset 0 0 10px rgba(255, 0, 85, 0.3);
-        animation: pulseNeon 3s ease-in-out infinite alternate;
-    }
-    @keyframes pulseNeon {
-        0% { box-shadow: 0 0 10px #ff0055, inset 0 0 5px rgba(255, 0, 85, 0.2); border-color: #ff0055; }
-        100% { box-shadow: 0 0 22px #ff3385, inset 0 0 15px rgba(255, 51, 133, 0.5); border-color: #ff3385; }
     }
     .wish-heading {
         font-family: 'Georgia', serif; font-weight: bold; color: #ffd700; font-size: 1.15rem;
-        text-shadow: 0 0 10px #ffd700, 0 0 5px #ff0055; margin-bottom: 6px; display: block;
+        text-shadow: 0 0 10px #ffd700; margin-bottom: 6px; display: block;
     }
-    .wish-body { font-size: 1.02rem; line-height: 1.6; color: #ffffff; text-shadow: 0 0 2px rgba(255,255,255,0.5); }
+    .wish-body { font-size: 1.02rem; line-height: 1.6; color: #ffffff; }
     
-    /* 🎈 तैरते बलून्स का बैकग्राउंड एरिया */
-    .balloon-area { position: fixed; bottom: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
-    
-    /* प्रीमियम स्लाइड बटन्स */
+    /* बटन्स की स्टाइल */
     .stButton>button {
-        width: 100% !important;
-        background: linear-gradient(45deg, #ff0055, #ff3377) !important;
+        width: 100% !important; background: linear-gradient(45deg, #ff0055, #ff3377) !important;
         color: white !important; font-weight: bold !important; border-radius: 20px !important;
         border: 1px solid #ffd700 !important; box-shadow: 0 4px 15px rgba(255, 0, 85, 0.4) !important;
     }
@@ -123,50 +112,10 @@ if not st.session_state.authenticated:
 
 # --- अनलॉक होने के बाद का मुख्य ऐप ---
 
-# 🎈 बैकग्राउंड में तैरते हुए बलून इंजेक्ट करने का स्क्रिप्ट
-balloons_html = """
-<div class="balloon-area">
-    <script>
-        function createBalloon() {
-            const colors = ['#ff0055', '#ff3385', '#ff66a3', '#ff00aa'];
-            const balloon = document.createElement('div');
-            balloon.style.position = 'fixed'; balloon.style.bottom = '-100px';
-            balloon.style.width = Math.random() * 30 + 20 + 'px'; balloon.style.height = balloon.style.width;
-            balloon.style.borderRadius = '50% 50% 50% 50% / 40% 40% 60% 60%';
-            balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
-            balloon.style.boxShadow = 'inset -5px -5px 10px rgba(0,0,0,0.2), 0 0 10px ' + balloon.style.background;
-            balloon.style.left = Math.random() * 100 + 'vw'; balloon.style.opacity = Math.random() * 0.5 + 0.4;
-            balloon.style.zIndex = '-1'; balloon.style.transition = 'transform ' + (Math.random() * 4 + 6) + 's linear, opacity 2s';
-            document.body.appendChild(balloon);
-            setTimeout(() => { balloon.style.transform = 'translateY(-120vh) translateX(' + (Math.random() * 100 - 50) + 'px)'; }, 50);
-            setTimeout(() => { balloon.remove(); }, 10000);
-        }
-        setInterval(createBalloon, 800);
-    </script>
-</div>
-"""
-st.markdown(balloons_html, unsafe_allow_html=True)
-
-# म्यूजिक ट्रैक सिलेक्शन लॉजिक
 if 'active_track' not in st.session_state:
     st.session_state.active_track = "https://soundhelix.com"
 
-st.components.v1.html(f"""
-<audio id="bg-audio" loop autoplay src="{st.session_state.active_track}"></audio>
-<script>
-    var audio = window.parent.document.getElementById('bg-audio') || document.getElementById('bg-audio');
-    function triggerPlay() {{
-        if (audio && audio.paused) {{
-            audio.play().catch(e => console.log("Interaction required"));
-        }}
-    }}
-    window.parent.document.addEventListener('click', triggerPlay, {{ once: true }});
-    window.parent.document.addEventListener('touchstart', triggerPlay, {{ once: true }});
-    if(audio) {{ audio.play(); }}
-</script>
-""", height=0)
-
-# ऑटोमैटिक इमेज डिटेक्शन सिस्टम
+# गिटहब फोल्डर इमेज डिटेक्शन
 all_files = os.listdir(".")
 all_images = [f for f in all_files if f.lower().endswith((".jpeg", ".jpg", ".png", ".webp")) and f.lower() != "app.py"]
 main_photo = all_images if len(all_images) > 0 else None
@@ -192,4 +141,18 @@ with panna1:
 
     st.markdown('<div class="romantic-badge badge-right">💝 YOU ARE MY EVERYTHING 🧸</div>', unsafe_allow_html=True)
 
-    # 🌟 सुरक्षित डायरेक्ट रेंडरर - यहाँ पूरे 20 कोट्स को बिना किसी कोडिंग एरर के नियॉन बॉक्स में लॉक कर दिया है
+    st.markdown('<div class="wishes-container">', unsafe_allow_html=True)
+    
+    # 20 प्रीमियम कोट्स नियॉन बॉक्स में
+    st.markdown('<div class="premium-wish-box"><span class="wish-heading">🌹 1. 11 Years Of Love</span><p class="wish-body">ग्यारह साल का ये सफर सिर्फ वक्त नहीं, मेरी जिंदगी की सबसे हसीन यादें हैं।</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="premium-wish-box"><span class="wish-heading">💖 2. Forever Mine</span><p class="wish-body">तुम कल भी मेरी लाइफलाइन थीं, आज भी हो और हमेशा रहोगी।</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="premium-wish-box"><span class="wish-heading">💍 3. To My Soulmate</span><p class="wish-body">भगवान से हर जन्म में सिर्फ तुम्हें ही अपनी हमसफर के रूप में मांगूंगा।</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="premium-wish-box"><span class="wish-heading">🌸 4. Adhoori Zindagi Poori Hui</span><p class="wish-body">तुम्हारे आने से मेरी जिंदगी में खुशियों के सारे रंग भर गए।</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="premium-wish-box"><span class="wish-heading">🏹 5. Deepest Love</span><p class="wish-body">दुनिया की कोई भी ताकत तुम्हारे लिए मेरे प्यार को कम नहीं कर सकती।</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="premium-wish-box"><span class="wish-heading">👑 6. Meri Manzil</span><p class="wish-body">तुम्हारे साथ बिताया हर एक पल मेरे लिए किसी त्योहार से कम नहीं है।</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="premium-wish-box"><span class="wish-heading">🤍 7. Queen of My Heart</span><p class="wish-body">तुम मेरे दिल की वो रानी हो जिसका राज इस दिल पर हमेशा रहेगा।</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="premium-wish-box"><span class="wish-heading">♾️ 8. Rooh Ka Rishta</span><p class="wish-body">हमारा रिश्ता सिर्फ जिस्म का नहीं, बल्कि रूह से रूह का जुड़ाव है।</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="premium-wish-box"><span class="wish-heading">🥰 9. My Lifeline</span><p class="wish-body">तुम्हारे चेहरे की मुस्कान ही मेरे जीने की सबसे बड़ी वजह है।</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="premium-wish-box"><span class="wish-heading">🌟 10. Aakhiri Wada</span><p class="wish-body">हात थाम के कहता हूँ, आखिरी सांस तक सिर्फ तुमसे ही बेइंतहा मोहब्बत करूँगा।</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="premium-wish-box"><span class="wish-heading">🌹 11. Togetherness Power</span><p class="wish-body">हमारा यह सफर मेरी पूरी जिंदगी की सबसे खूबसूरत सच्चाई है। 🌹</p></div>', unsafe_allow_html=True)
+    
