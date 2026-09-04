@@ -203,7 +203,6 @@ if 'cached_images' not in st.session_state:
     if len(all_images) > 0:
         st.session_state.cached_images = all_images
     else:
-        # बैकअप इमेजेस ताकि कभी भी ब्लैक/खाली स्क्रीन न मिले
         st.session_state.cached_images = [
             "https://unsplash.com",
             "https://unsplash.com",
@@ -222,8 +221,7 @@ with panna1:
     col1, col2 = st.columns(2)
 
     with col1:
-        # मुख्य पन्ने पर गिटहब फोल्डर में मौजूद पहली फोटो खींचेगा
-        st.image(st.session_state.cached_images[0], use_container_width=True)
+        st.image(st.session_state.cached_images, use_container_width=True)
 
     with col2:
         circle_html = """
@@ -267,3 +265,5 @@ with panna1:
         ("🤍 7. Queen of My Heart", "तुम मेरे दिल की वो रानी हो जिसका राज इस दिल पर हमेशा रहेगा।"),
         ("♾️ 8. Rooh Ka Rishta", "हमारी रिश्ता सिर्फ जिस्म का नहीं, बल्कि रूह से रूह का जुड़ाव है।"),
         ("🥰 9. My Lifeline", "तुम्हारे चेहरे की मुस्कान ही मेरे जीने की सबसे बड़ी वजह है।"),
+        ("🌟 10. Aakhiri Wada", "हात थाम के कहता हूँ, आखिरी सांस तक सिर्फ तुमसे ही बेइंतहा मोहब्बत करूँगा।"),
+        
