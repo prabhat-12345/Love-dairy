@@ -5,7 +5,7 @@ import time
 # 1. पेज की पूरी सेटिंग
 st.set_page_config(page_title="Happy Birthday My Love!", page_icon="❤️", layout="wide")
 
-# 2. प्रीमियम कस्टमाइज नियॉन थीम और धड़कते दिल का CSS
+# 2. प्रीमियम कस्टमाइज नियॉन थीम, स्टाइलिश फॉन्ट और धड़कते दिल का CSS
 custom_css = """
 <style>
     @import url('https://googleapis.com');
@@ -94,26 +94,21 @@ custom_css = """
         margin-top: 10px;
     }
     
-    /* 🌟 स्टाइलिश नियॉन कोट्स टेक्स्ट बॉक्स */
+    /* 🌟 स्टाइलिश नियॉन कोट्स टेक्स्ट की स्टाइलिंग */
     .wishes-container { margin-top: 25px; padding: 5px; }
-    .premium-wish-box {
-        background: rgba(15, 0, 5, 0.8); 
-        border: 2px solid #ff0055; 
-        padding: 16px; 
-        border-radius: 16px; 
-        margin-bottom: 20px;
-        box-shadow: 0 0 15px #ff0055, inset 0 0 10px rgba(255, 0, 85, 0.3);
-    }
-    .wish-heading {
-        font-family: 'Georgia', serif; font-weight: bold; color: #ffd700; font-size: 1.15rem;
-        text-shadow: 0 0 10px #ffd700; margin-bottom: 6px; display: block;
-    }
-    .wish-body { 
+    
+    /* नियॉन टेक्स्ट लुक */
+    .neon-text-style {
         font-family: 'Caveat', 'Dancing Script', cursive; 
-        font-size: 1.3rem; 
-        line-height: 1.5; 
+        font-size: 1.45rem; 
+        line-height: 1.6; 
         color: #ffccdb;
-        text-shadow: 0 0 8px rgba(255, 51, 119, 0.6);
+        text-shadow: 0 0 8px rgba(255, 51, 119, 0.8), 0 0 2px #ffffff;
+        background: rgba(15, 0, 5, 0.5);
+        padding: 12px;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        border-left: 3px solid #ff0055;
     }
     
     /* बटन स्टाइल */
@@ -156,18 +151,25 @@ if not st.session_state.authenticated:
 
 # --- अनलॉक होने के बाद का मुख्य ऐप ---
 
+# म्यूजिक प्लेयर स्टेट लॉजिक
 if 'active_track' not in st.session_state:
     st.session_state.active_track = "https://soundhelix.com"
 
-# गिटहब फोल्डर इमेज डिटेक्शन
-all_files = os.listdir(".")
-all_images = [f for f in all_files if f.lower().endswith((".jpeg", ".jpg", ".png", ".webp")) and f.lower() != "app.py"]
-main_photo = all_images if len(all_images) > 0 else None
-album_photos = all_images if len(all_images) > 0 else ["https://unsplash.com"]
+# मजबूत इमेज डेटा लॉकिंग सिस्टम
+if 'permanent_images' not in st.session_state:
+    all_files = os.listdir(".")
+    all_images = [f for f in all_files if f.lower().endswith((".jpeg", ".jpg", ".png", ".webp")) and f.lower() != "app.py"]
+    if len(all_images) > 0:
+        st.session_state.permanent_images = all_images
+    else:
+        st.session_state.permanent_images = [
+            "https://unsplash.com",
+            "https://unsplash.com"
+        ]
 
 panna1, panna2, panna3 = st.tabs(["🏠 मुख्य पन्ना", "🎵 म्यूजिक रूम", "📸 फोटो एल्बम"])
 
-# ----------------- पन्ना 1: होम और पूरे 20 मिक्स्ड स्टाइलिश कोट्स -----------------
+# ----------------- पन्ना 1: होम और पूरे 15 नियॉन स्टाइलिश कोट्स -----------------
 with panna1:
     st.markdown('<div class="love-sender-box"><span class="love-name">🎉 PRABHAT 🎉</span><br><span style="color:#ffb3cc; font-size:0.9rem; font-weight:bold;">Wishes Happy Birthday To His Lifeline</span><br><span class="love-receiver-name">💖 LAXMI 💖</span></div>', unsafe_allow_html=True)
     st.markdown('<h1 class="main-title">Happy Birthday<br>My Love 🎂</h1>', unsafe_allow_html=True)
@@ -175,10 +177,7 @@ with panna1:
 
     col1, col2 = st.columns(2)
     with col1:
-        if main_photo:
-            st.image(main_photo, use_container_width=True)
-        else:
-            st.image("https://unsplash.com", use_container_width=True)
+        st.image(st.session_state.permanent_images[0], use_container_width=True)
 
     with col2:
         # ❤️ धड़कता हुआ शानदार मोटा दिल लेआउट
@@ -186,12 +185,14 @@ with panna1:
 
     st.markdown('<div class="romantic-badge badge-right">💝 YOU ARE MY EVERYTHING 🧸</div>', unsafe_allow_html=True)
 
+    # 🌟 बिल्कुल सटीक 15 मिक्स्ड (Hindi + English) स्टाइलिश नियॉन कोट्स (डायरेक्ट विज़िट फ़ॉर्मेट ताकि कोई कोट्स न कटे)
     st.markdown('<div class="wishes-container">', unsafe_allow_html=True)
     
-    # 20 मिक्स्ड हिंदी-इंग्लिश स्टाइलिश नियॉन कोट्स
-    st.markdown('<div class="premium-wish-box"><span class="wish-heading">🌹 1. 11 Years Of Love</span><p class="wish-body">ग्यारह साल का ये सफर सिर्फ वक्त नहीं, It is the most beautiful journey of my life with you. 🌹</p></div>', unsafe_allow_html=True)
-    st.markdown('<div class="premium-wish-box"><span class="wish-heading">💖 2. Forever Mine</span><p class="wish-body">चेहरे पर आपके रहे हमेशा नूर, You are my forever love, no one can take you away from me. 💖</p></div>', unsafe_allow_html=True)
-    st.markdown('<div class="premium-wish-box"><span class="wish-heading">💍 3. To My Soulmate</span><p class="wish-body">भगवान से हर जन्म में सिर्फ तुम्हें ही मांगूंगा, You are my ultimate soulmate now and forever. 💍</p></div>', unsafe_allow_html=True)
-    st.markdown('<div class="premium-wish-box"><span class="wish-heading">🌸 4. Life Completed</span><p class="wish-body">तुम्हारे आने से खुशियों के सारे रंग भर गए, You completed my incomplete world so beautifully. 🌸</p></div>', unsafe_allow_html=True)
-    st.markdown('<div class="premium-wish-box"><span class="wish-heading">🏹 5. Deepest Love</span><p class="wish-body">दुनिया की कोई भी ताकत हमारे प्यार को कम नहीं कर सकती, My love for you grows deeper every single day. 🏹</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="neon-text-style"><b>🌹 1. 11 Years Of Togetherness:</b> ग्यारह साल का ये सफर सिर्फ वक्त नहीं, It is the most beautiful journey of my life with you. 🌹</div>', unsafe_allow_html=True)
+    st.markdown('<div class="neon-text-style"><b>💖 2. My Boundless Devotion:</b> चेहरे पर आपके रहे हमेशा नूर, You are my forever love, no one can take you away from me. 💖</div>', unsafe_allow_html=True)
+    st.markdown('<div class="neon-text-style"><b>💍 3. Connected Souls:</b> भगवान से हर जन्म में सिर्फ तुम्हें ही मांगूंगा, You are my ultimate soulmate now and forever. 💍</div>', unsafe_allow_html=True)
+    st.markdown('<div class="neon-text-style"><b>🌸 4. Life Completed By You:</b> तुम्हारे आने से खुशियों के सारे रंग भर गए, You completed my incomplete world so beautifully. 🌸</div>', unsafe_allow_html=True)
+    st.markdown('<div class="neon-text-style"><b>🏹 5. Unbreakable Love Vow:</b> दुनिया की कोई भी ताकत हमारे प्यार को कम नहीं कर सकती, My love for you grows deeper every single day. 🏹</div>', unsafe_allow_html=True)
+    st.markdown('<div class="neon-text-style"><b>👑 6. Ultimate Destination:</b> तुम्हारे साथ बिताया हर पल एक त्योहार है, You are my destination and my beautiful home. 👑</div>', unsafe_allow_html=True)
+    st.markdown('<div class="neon-text-style"><b>🤍 7. Ruler Of My Heart:</b> तुम मेरे दिल की वो रानी हो जिसका राज हमेशा रहेगा, You rule my heart like a true queen, Laxmi. 🤍</div>', unsafe_allow_html=True)
     
