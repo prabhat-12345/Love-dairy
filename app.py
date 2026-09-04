@@ -5,172 +5,7 @@ import time
 # 1. पेज की पूरी सेटिंग
 st.set_page_config(page_title="Happy Birthday My Love!", page_icon="❤️", layout="wide")
 
-# 2. कस्टमाइज लक्ज़री नियॉन और एनिमेटेड बलून CSS थीम
-custom_css = """
-<style>
-    /* ऐप का शानदार डार्क रोमांटिक बैकग्राउंड */
-    .stApp {
-        background: linear-gradient(135deg, #0d0003 0%, #1a0507 50%, #2b000a 100%);
-        color: #ffffff;
-        position: relative;
-        overflow-x: hidden;
-    }
-    
-    /* मुख्य कंटेनर मोबाइल स्क्रीन के लिए */
-    .block-container {
-        padding-top: 2.2rem !important;
-        padding-bottom: 2rem !important;
-        max-width: 450px !important;
-    }
-    
-    /* मुख्य बनावट सेटिंग */
-    .main-title {
-        font-family: 'Georgia', serif;
-        text-align: center;
-        font-size: 2.4rem;
-        font-weight: bold;
-        letter-spacing: 1px;
-        margin-top: 0px;
-        margin-bottom: 10px;
-        background: linear-gradient(to right, #ff0055, #ffd700, #ff00ab);
-        background-size: 200% auto;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: textShine 4s linear infinite;
-    }
-    
-    @keyframes textShine {
-        0% { background-position: 0% center; }
-        100% { background-position: 200% center; }
-    }
-    
-    .love-sender-box {
-        text-align: center;
-        margin-top: 5px;
-        margin-bottom: 12px;
-        line-height: 1.4;
-    }
-    
-    .love-name {
-        font-family: 'Georgia', serif;
-        font-size: 2rem;
-        font-weight: bold;
-        text-transform: uppercase;
-        background: linear-gradient(45deg, #ffd700, #ff00b3);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-shadow: 0px 0px 15px rgba(255, 128, 179, 0.6);
-        display: inline-block;
-    }
-    
-    .love-receiver-name {
-        font-family: 'Georgia', serif;
-        font-size: 2.2rem;
-        font-weight: bold;
-        text-transform: uppercase;
-        background: linear-gradient(45deg, #ff0055, #ff00b3);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-shadow: 0px 0px 20px #ff0055, 0px 0px 10px #ff00b3;
-        display: inline-block;
-    }
-    
-    .romantic-badge {
-        font-family: 'Georgia', serif;
-        font-size: 1.2rem;
-        font-weight: bold;
-        text-align: center;
-        margin: 10px auto;
-        padding: 5px 15px;
-        border-radius: 50px;
-        background: rgba(255, 0, 85, 0.1);
-        border: 1px solid rgba(255, 0, 85, 0.3);
-        width: fit-content;
-    }
-    
-    .badge-left { color: #ff0055; text-shadow: 0 0 8px #ff0055; }
-    .badge-right { color: #ffd700; text-shadow: 0 0 8px #ffd700; }
-    
-    .stImage img {
-        border-radius: 20px !important;
-        border: 2px solid rgba(255, 0, 85, 0.5) !important;
-        box-shadow: 0 0 25px rgba(255, 0, 85, 0.7) !important;
-    }
-    
-    /* 🌟 सुपर प्रीमियम नियॉन विश कार्ड्स */
-    .wishes-container {
-        margin-top: 25px;
-        padding: 5px;
-    }
-    
-    .premium-wish-box {
-        background: rgba(15, 0, 5, 0.6);
-        border: 2px solid #ff0055;
-        padding: 16px;
-        border-radius: 16px;
-        margin-bottom: 20px;
-        box-shadow: 0 0 15px #ff0055, inset 0 0 10px rgba(255, 0, 85, 0.3);
-        animation: pulseNeon 3s ease-in-out infinite alternate;
-    }
-    
-    @keyframes pulseNeon {
-        0% { box-shadow: 0 0 10px #ff0055, inset 0 0 5px rgba(255, 0, 85, 0.2); border-color: #ff0055; }
-        100% { box-shadow: 0 0 22px #ff3385, inset 0 0 15px rgba(255, 51, 133, 0.5); border-color: #ff3385; }
-    }
-    
-    .wish-heading {
-        font-family: 'Georgia', serif;
-        font-weight: bold;
-        color: #ffd700;
-        font-size: 1.15rem;
-        text-shadow: 0 0 10px #ffd700, 0 0 5px #ff0055;
-        margin-bottom: 6px;
-        display: block;
-    }
-    
-    .wish-body {
-        font-size: 1.02rem;
-        line-height: 1.6;
-        color: #ffffff;
-        text-shadow: 0 0 2px rgba(255,255,255,0.5);
-    }
-    
-    /* 🎈 तैरते हुए बलून एनिमेशन का बैकग्राउंड सिस्टम */
-    .balloon-area {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-        pointer-events: none;
-    }
-    
-    /* कस्टमाइज्ड टैब डिज़ाइन */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
-        justify-content: center;
-    }
-    .stTabs [data-baseweb="tab"] {
-        background-color: rgba(255, 51, 119, 0.1) !important;
-        border: 1px solid rgba(255, 51, 119, 0.3) !important;
-        border-radius: 15px !important;
-        padding: 6px 12px !important;
-        color: #ffb3cc !important;
-        font-weight: bold !important;
-        font-size: 0.9rem !important;
-    }
-    .stTabs [aria-selected="true"] {
-        background: linear-gradient(45deg, #ff0055, #ff3377) !important;
-        color: white !important;
-        border: 1px solid #ffd700 !important;
-        box-shadow: 0 0 15px rgba(255, 0, 85, 0.5) !important;
-    }
-</style>
-"""
-st.markdown(custom_css, unsafe_allow_html=True)
-
-# 3. पासवर्ड लॉक स्क्रीन
+# 2. सीक्रेट पासवर्ड लॉक स्क्रीन
 if 'authenticated' not in st.session_state:
     st.session_state.authenticated = False
 
@@ -191,82 +26,94 @@ if not st.session_state.authenticated:
 
 # --- अनलॉक होने के बाद का मुख्य ऐप ---
 
-# 🎈 बैकग्राउंड में तैरते हुए बलून इंजेक्ट करने का स्क्रिप्ट (HTML/CSS)
-balloons_html = """
-<div class="balloon-area">
-    <script>
-        function createBalloon() {
-            const colors = ['#ff0055', '#ff3385', '#ff66a3', '#ff00aa', '#ff33aa'];
-            const balloon = document.createElement('div');
-            balloon.style.position = 'fixed';
-            balloon.style.bottom = '-100px';
-            balloon.style.width = Math.random() * 30 + 20 + 'px';
-            balloon.style.height = balloon.style.width;
-            balloon.style.borderRadius = '50% 50% 50% 50% / 40% 40% 60% 60%';
-            balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
-            balloon.style.boxShadow = 'inset -5px -5px 10px rgba(0,0,0,0.2), 0 0 10px ' + balloon.style.background;
-            balloon.style.left = Math.random() * 100 + 'vw';
-            balloon.style.opacity = Math.random() * 0.5 + 0.4;
-            balloon.style.zIndex = '-1';
-            balloon.style.transition = 'transform ' + (Math.random() * 4 + 6) + 's linear, opacity 2s';
-            
-            document.body.appendChild(balloon);
-            
-            setTimeout(() => {
-                balloon.style.transform = 'translateY(-120vh) translateX(' + (Math.random() * 100 - 50) + 'px)';
-            }, 50);
-            
-            setTimeout(() => {
-                balloon.remove();
-            }, 10000);
-        }
-        setInterval(createBalloon, 800);
-    </script>
-</div>
-"""
-st.markdown(balloons_html, unsafe_allow_html=True)
-
-# म्यूजिक ट्रैक सिलेक्शन लॉजिक
+# म्यूजिक प्लेयर स्टेट लॉजिक
 if 'active_track' not in st.session_state:
     st.session_state.active_track = "https://soundhelix.com"
 
-st.components.v1.html(f"""
-<audio id="bg-audio" loop autoplay src="{st.session_state.active_track}"></audio>
-<script>
-    var audio = window.parent.document.getElementById('bg-audio') || document.getElementById('bg-audio');
-    function triggerPlay() {{
-        if (audio && audio.paused) {{
-            audio.play().catch(e => console.log("Interaction required"));
-        }}
-    }}
-    window.parent.document.addEventListener('click', triggerPlay, {{ once: true }});
-    window.parent.document.addEventListener('touchstart', triggerPlay, {{ once: true }});
-    if(audio) {{ audio.play(); }}
-</script>
-""", height=0)
-
-# ऑटोमैटिक इमेज डिटेक्शन और क्रैश प्रिवेंशन सुरक्षा लॉजिक
+# ऑटोमैटिक इमेज लोडिंग सिस्टम
 all_files = os.listdir(".")
 all_images = [f for f in all_files if f.lower().endswith((".jpeg", ".jpg", ".png", ".webp")) and f.lower() != "app.py"]
 
 main_photo = all_images if len(all_images) > 0 else None
 album_photos = all_images if len(all_images) > 0 else ["https://unsplash.com"]
 
-# 4. डायरी के अलग-अलग पन्ने (Tabs System)
+# डायरी के अलग-अलग पन्ने (Tabs System)
 panna1, panna2, panna3 = st.tabs(["🏠 मुख्य पन्ना", "🎵 म्यूजिक रूम", "📸 फोटो एल्बम"])
 
-# ----------------- पन्ना 1: होम और पूरे 20 नियॉन कोट्स -----------------
+# ----------------- पन्ना 1: होम और पूरे 20 कोट्स -----------------
 with panna1:
-    st.markdown('<div class="love-sender-box"><span class="love-name">🎉 PRABHAT 🎉</span><br><span style="color:#ffb3cc; font-size:0.9rem; font-weight:bold;">Wishes Happy Birthday To His Lifeline</span><br><span class="love-receiver-name">💖 LAXMI 💖</span></div>', unsafe_allow_html=True)
-    st.markdown('<h1 class="main-title">Happy Birthday<br>My Love 🎂</h1>', unsafe_allow_html=True)
-    st.markdown('<div class="romantic-badge badge-left">❤️ YOU ARE MY LIFE 🌹</div>', unsafe_allow_html=True)
+    st.markdown("### 🎉 PRABHAT Wishes Happy Birthday To His Lifeline LAXMI 💖")
+    st.subheader("Happy Birthday My Love 🎂")
+    
+    # इमेज लेआउट (गिटहब फोल्डर की पहली इमेज अपने आप उठाएगा)
+    if main_photo:
+        st.image(main_photo, use_container_width=True)
+    else:
+        st.image("https://unsplash.com", use_container_width=True)
+        
+    st.info("❤️ 11 YRS OF LOVE | MY WIFE | MY BABU | MY JAAN | MY LIFE ❤️")
 
-    col1, col2 = st.columns(2)
-    with col1:
-        if main_photo:
-            st.image(main_photo, use_container_width=True)
-        else:
-            st.image("https://unsplash.com", use_container_width=True)
+    # पूरे 20 कोट्स बिना किसी बड़े कोडिंग ब्रैकेट के (बिल्कुल सेफ)
+    st.success("🌹 1. 11 Years Of Love: ग्यारह साल का ये सफर सिर्फ वक्त नहीं, मेरी जिंदगी की सबसे हसीन यादें हैं।")
+    st.success("💖 2. Forever Mine: तुम कल भी मेरी लाइफलाइन थीं, आज भी हो और हमेशा रहोगी।")
+    st.success("💍 3. To My Soulmate: भगवान से हर जन्म में सिर्फ तुम्हें ही अपनी हमसफर के रूप में मांगूंगा।")
+    st.success("🌸 4. Adhoori Zindagi Poori Hui: तुम्हारे आने से मेरी जिंदगी में खुशियों के सारे रंग भर गए।")
+    st.success("🏹 5. Deepest Love: दुनिया की कोई भी ताकत तुम्हारे लिए मेरे प्यार को कम नहीं कर सकती।")
+    st.success("👑 6. Meri Manzil: तुम्हारे साथ बिताया हर एक पल मेरे लिए किसी त्योहार से कम नहीं है।")
+    st.success("🤍 7. Queen of My Heart: तुम मेरे दिल की वो रानी हो जिसका राज इस दिल पर हमेशा रहेगा।")
+    st.success("♾️ 8. Rooh Ka Rishta: हमारा रिश्ता सिर्फ जिस्म का नहीं, बल्कि रूह से रूह का जुड़ाव है।")
+    st.success("🥰 9. My Lifeline: तुम्हारे चेहरे की मुस्कान ही मेरे जीने की सबसे बड़ी वजह है।")
+    st.success("🌟 10. Aakhiri Wada: हाथ थाम के कहता हूँ, आखिरी सांस तक सिर्फ तुमसे ही बेइंतहा मोहब्बत करूँगा।")
+    st.success("🌹 11. Togetherness Power: हमारा यह सफर मेरी पूरी जिंदगी की सबसे खूबसूरत सच्चाई है।")
+    st.success("🧎 12. Eternal Glow: चेहरे पर आपके रहे हमेशा नूर, खुदा कभी न करे हमसे आपको दूर... Happy Birthday Jaan!")
+    st.success("🏹 13. Heartbeat Track: You are the beat of my heart, the smile on my face, and the spark in my life. I love you endlessly.")
+    st.success("🌸 14. Completeness: तुम्हारे बिना मेरी सुबह और मेरी शाम अधूरी है, सच कहूँ तो लक्ष्मी, तुम्हारे बिना मेरी पूरी जान अधूरी है!")
+    st.success("🌟 15. Unmatched Bond: In all the world, there is no heart for me like yours. In all the world, there is no love for you like mine.")
+    st.success("🎂 16. Meri Mannat Dua: खुदा से जब भी मैंने कोई दुआ मांगी है, हर दुआ में सिर्फ और सिर्फ तुम्हारी लंबी उम्र और खुशी मांगी है।")
+    st.success("🤍 17. Queen of My World: You are my today, my tomorrow, and my forever. Happy Birthday to the queen of my world!")
+    st.success("♾️ 18. Unchanged Devotion: 11 साल में वक्त बदला, दुनिया बदली, पर इस दिल में लक्ष्मी के लिए धड़कन और मोहब्बत कभी नहीं बदली।")
+    st.success("💍 19. Lifetime Commitment: सात फेरों के वो वादे और हाथ थामने का वो पल... मेरी आखिरी सांस तक मैं सिर्फ तुम्हारा बनकर रहूँगा।")
+    st.success("🥰 20. Ultimate Smile Joy: जब तुम मुस्कुराती हो तो ऐसा लगता है जैसे पूरी दुनिया की खुशियां मेरे आँगन में सिमट आई हों।")
+    st.snow()
 
-    with col2:
-        circle_html = """
+# ----------------- पन्ना 2: म्यूजिक रूम -----------------
+with panna2:
+    st.markdown("#### 🎵 बैकग्राउंड गाना")
+    st.audio(st.session_state.active_track, format="audio/mp3")
+    
+    col_m1, col_m2 = st.columns(2)
+    with col_m1:
+        if st.button("🎵 धुन 1 चालू करें"):
+            st.session_state.active_track = "https://soundhelix.com"
+            st.rerun()
+        if st.button("🎵 धुन 2 चालू करें"):
+            st.session_state.active_track = "https://soundhelix.com"
+            st.rerun()
+    with col_m2:
+        if st.button("🎵 धुन 3 चालू करें"):
+            st.session_state.active_track = "https://soundhelix.com"
+            st.rerun()
+        if st.button("🤫 संगीत बंद करें"):
+            st.session_state.active_track = ""
+            st.rerun()
+
+# ----------------- पन्ना 3: फोटो एल्बम -----------------
+with panna3:
+    st.markdown("#### 📸 यादों का एल्बम (आगे-पीछे बटन दबाकर देखें)")
+    if 'current_slide' not in st.session_state:
+        st.session_state.current_slide = 0
+        
+    total_pics = len(album_photos)
+    current_img = album_photos[st.session_state.current_slide % total_pics]
+    st.image(current_img, use_container_width=True)
+    
+    col_b1, col_b2 = st.columns(2)
+    with col_b1:
+        if st.button("⬅️ पीछे"):
+            st.session_state.current_slide = (st.session_state.current_slide - 1) % total_pics
+            st.rerun()
+    with col_b2:
+        if st.button("आगे ➡️"):
+            st.session_state.current_slide = (st.session_state.current_slide + 1) % total_pics
+            st.rerun()
+            
