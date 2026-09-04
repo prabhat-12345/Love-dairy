@@ -2,10 +2,10 @@ import streamlit as st
 import os
 import time
 
-# 1. पेज की पूरी सेटिंग
+# 1. पेज की सेटिंग
 st.set_page_config(page_title="Happy Birthday My Love!", page_icon="❤️", layout="wide")
 
-# 2. कस्टमाइज CSS
+# 2. प्रीमियम कस्टमाइज CSS थीम
 custom_css = """
 <style>
     .stApp {
@@ -132,7 +132,7 @@ custom_css = """
 """
 st.markdown(custom_css, unsafe_allow_html=True)
 
-# 3. सीक्रेट पासवर्ड लॉक स्क्रीन
+# 3. पासवर्ड लॉक स्क्रीन
 if 'authenticated' not in st.session_state:
     st.session_state.authenticated = False
 
@@ -153,7 +153,6 @@ if not st.session_state.authenticated:
 
 # --- अनलॉक होने के बाद का मुख्य ऐप ---
 
-# म्यूजिक प्लेयर स्टेट लॉजिक
 if 'active_track' not in st.session_state:
     st.session_state.active_track = "https://soundhelix.com"
 
@@ -172,21 +171,14 @@ st.components.v1.html(f"""
 </script>
 """, height=0)
 
-# गिटहब फोल्डर से इमेज लोडिंग
-if 'cached_images' not in st.session_state:
-    all_files = os.listdir(".")
-    all_images = [f for f in all_files if f.lower().endswith((".jpeg", ".jpg", ".png", ".webp")) and f.lower() != "app.py"]
-    
-    if len(all_images) > 0:
-        st.session_state.cached_images = all_images
-    else:
-        st.session_state.cached_images = [
-            "https://unsplash.com",
-            "https://unsplash.com",
-            "https://unsplash.com"
-        ]
+# ऑटोमैटिक इमेज डिटेक्शन
+all_files = os.listdir(".")
+all_images = [f for f in all_files if f.lower().endswith((".jpeg", ".jpg", ".png", ".webp")) and f.lower() != "app.py"]
 
-# 4. डायरी के अलग-अलग पन्ने
+main_photo = all_images if len(all_images) > 0 else None
+album_photos = all_images if len(all_images) > 0 else ["https://unsplash.com"]
+
+# 4. डायरी के अलग-अलग पन्ने (Tabs System)
 panna1, panna2, panna3 = st.tabs(["🏠 मुख्य पन्ना", "🎵 म्यूजिक रूम", "📸 फोटो एल्बम"])
 
 # ----------------- पन्ना 1: होम और पूरे 20 प्रीमियम कोट्स -----------------
@@ -196,32 +188,15 @@ with panna1:
     st.markdown('<div class="romantic-badge badge-left">❤️ YOU ARE MY LIFE 🌹</div>', unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
-
     with col1:
-        st.image(st.session_state.cached_images, use_container_width=True)
+        if main_photo:
+            st.image(main_photo, use_container_width=True)
+        else:
+            st.image("https://unsplash.com", use_container_width=True)
 
     with col2:
         circle_html = """
-        <div style="
-            display: flex; 
-            flex-direction: column;
-            justify-content: center; 
-            align-items: center; 
-            border: 2px solid #ff0055; 
-            border-radius: 50%; 
-            width: 140px; 
-            height: 140px; 
-            margin: 30px auto 0 auto; 
-            background: rgba(255,0,85,0.1);
-            box-shadow: 0 0 20px #ff0055;
-            font-family: 'Georgia', serif;
-            font-size: 0.8rem;
-            font-weight: bold;
-            color: #ffffff;
-            text-align: center;
-            line-height: 1.4;
-            transform: rotate(-15deg);
-        ">
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; border: 2px solid #ff0055; border-radius: 50%; width: 140px; height: 140px; margin: 30px auto 0 auto; background: rgba(255,0,85,0.1); box-shadow: 0 0 20px #ff0055; font-family: 'Georgia', serif; font-size: 0.8rem; font-weight: bold; color: #ffffff; text-align: center; line-height: 1.4; transform: rotate(-15deg);">
             11 💖 YRS<br>OF 🌹 LOVE<br>MY 💍 WIFE<br>MY BABU<br>MY 💞 JAAN<br>MY 🚼 LIFE
         </div>
         """
@@ -229,21 +204,15 @@ with panna1:
 
     st.markdown('<div class="romantic-badge badge-right">💝 YOU ARE MY EVERYTHING 🧸</div>', unsafe_allow_html=True)
 
+    # पूरे 20 प्रीमियम कोट्स बिना किसी पायथन डिक्शनरी या लिस्ट ब्रैकेट के (डायरेक्ट रेंडर)
     st.markdown('<div class="wishes-container">', unsafe_allow_html=True)
     
-    # 20 प्रीमियम कोट्स बिना किसी बड़े ब्रैकेट के सीधे सुरक्षित तरीके से रेंडर किए गए हैं
-    quotes_list = [
-        ("🌹 1. 11 Years Of Love", "ग्यारह साल का ये सफर सिर्फ वक्त नहीं, मेरी जिंदगी की सबसे haseen यादें हैं।"),
-        ("💖 2. Forever Mine", "तुम कल भी मेरी लाइफलाइन थीं, आज भी हो और हमेशा रहोगी।"),
-        ("💍 3. To My Soulmate", "भगवान से हर जन्म में सिर्फ तुम्हें ही अपनी हमसफर के रूप में मांगूंगा।"),
-        ("🌸 4. Adhoori Zindagi Poori Hui", "तुम्हारे आने से मेरी जिंदगी में खुशियों के सारे रंग भर गए।"),
-        ("🏹 5. Deepest Love", "दुनिया की कोई भी ताकत तुम्हारे लिए मेरे प्यार को कम नहीं कर सकती।"),
-        ("👑 6. Meri Manzil", "तुम्हारे साथ बिताया हर एक पल मेरे लिए किसी त्योहार से कम नहीं है।"),
-        ("🤍 7. Queen of My Heart", "तुम मेरे दिल की वो रानी हो जिसका राज इस दिल पर हमेशा रहेगा।"),
-        ("♾️ 8. Rooh Ka Rishta", "हमारी रिश्ता सिर्फ जिस्म का नहीं, बल्कि रूह से रूह का जुड़ाव है।"),
-        ("🥰 9. My Lifeline", "तुम्हारे चेहरे की मुस्कान ही मेरे जीने की सबसे बड़ी वजह है।"),
-        ("🌟 10. Aakhiri Wada", "हात थाम के कहता हूँ, आखिरी सांस तक सिर्फ तुमसे ही बेइंतहा मोहब्बत करूँगा।"),
-        ("🌹 11. Togetherness Power", "हमारा यह सफर मेरी पूरी जिंदगी की सबसे खूबसूरत सच्चाई है।"),
-        ("🧎 12. Eternal Glow", "चेहरे पर आपके रहे हमेशा नूर, खुदा कभी न करे हमसे आपको दूर... Happy Birthday Jaan!"),
-        ("🏹 13. Heartbeat Track", "'You are the beat of my heart, the smile on my face, and the spark in my life. I love you endlessly.'"),
-        ("🌸 14. Completeness", "तुम्हारे बिना मेरी सुबह और मेरी शाम अधूरी है, सच कहूँ तो लक्ष्मी, तुम्हारे बिना मेरी पूरी जान अधूरी है!"),
+    st.markdown('<div class="premium-wish-box"><span class="wish-heading">🌹 1. 11 Years Of Love</span><p class="wish-body">ग्यारह साल का ये सफर सिर्फ वक्त नहीं, मेरी जिंदगी की सबसे हसीन यादें हैं।</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="premium-wish-box"><span class="wish-heading">💖 2. Forever Mine</span><p class="wish-body">तुम कल भी मेरी लाइफलाइन थीं, आज भी हो और हमेशा रहोगी।</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="premium-wish-box"><span class="wish-heading">💍 3. To My Soulmate</span><p class="wish-body">भगवान से हर जन्म में सिर्फ तुम्हें ही अपनी हमसफर के रूप में मांगूंगा।</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="premium-wish-box"><span class="wish-heading">🌸 4. Adhoori Zindagi Poori Hui</span><p class="wish-body">तुम्हारे आने से मेरी जिंदगी में खुशियों के सारे रंग भर गए।</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="premium-wish-box"><span class="wish-heading">🏹 5. Deepest Love</span><p class="wish-body">दुनिया की कोई भी ताकत तुम्हारे लिए मेरे प्यार को कम नहीं कर सकती।</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="premium-wish-box"><span class="wish-heading">👑 6. Meri Manzil</span><p class="wish-body">तुम्हारे साथ बिताया हर एक पल मेरे लिए किसी त्योहार से कम नहीं है।</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="premium-wish-box"><span class="wish-heading">🤍 7. Queen of My Heart</span><p class="wish-body">तुम मेरे दिल की वो रानी हो जिसका राज इस दिल पर हमेशा रहेगा।</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="premium-wish-box"><span class="wish-heading">♾️ 8. Rooh Ka Rishta</span><p class="wish-body">हमारी रिश्ता सिर्फ जिस्म का नहीं, बल्कि रู้ से रूह का जुड़ाव है।</p></div>', unsafe_allow_html=True)
+    
