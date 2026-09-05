@@ -101,7 +101,7 @@ if not st.session_state.authenticated:
     
     password = st.text_input("सीक्रेट कोड (Password) दर्ज करें:", type="password")
     if st.button("डायरी खोलें 📖"):
-        if password == "1122":  
+        if password == "laxmip":  
             st.session_state.authenticated = True
             st.success("अनलॉक हो रहा है... ❤️")
             time.sleep(1)
